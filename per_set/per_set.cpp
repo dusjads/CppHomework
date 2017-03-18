@@ -397,6 +397,7 @@ persistent_set::iterator persistent_set::persistent_set::find(value_type find_va
 			now = now -> left;
 		} else if (find_value > now -> value && now -> right != nullptr) {
 			result.stack.push_back(now);
+			now = now -> right;
 		} else result.is_end = true;
 	}
 	result.now = now;
