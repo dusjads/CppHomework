@@ -52,7 +52,7 @@ mul_long_long:
                 push            rsi
                 push            rdi
                 push            r10
-                call            add_long_long_r 
+                call            add_long_long 
                 pop             r10 
                 pop             rdi
                 pop             rsi
@@ -77,8 +77,13 @@ mul_long_long:
                 ret
 
 
-
-add_long_long_r:
+; adds two long number
+;    r10 -- address of summand #1 (long number)
+;    rdi -- address of summand #2 (long number)
+;    rcx -- length of long numbers in qwords
+; result:
+;    sum is written to rdi
+add_long_long:
                 push            r10
                 push            rdi
                 push            rcx
@@ -99,30 +104,6 @@ add_long_long_r:
                 ret
 
 
-; adds two long number
-;    rdi -- address of summand #1 (long number)
-;    rsi -- address of summand #2 (long number)
-;    rcx -- length of long numbers in qwords
-; result:
-;    sum is written to rdi
-add_long_long:
-                push            rdi
-                push            rsi
-                push            rcx
-
-                clc
-.loop:
-                mov             rax, [rsi]
-                lea             rsi, [rsi + 8]
-                adc             [rdi], rax
-                lea             rdi, [rdi + 8]
-                dec             rcx
-                jnz             .loop
-
-                pop             rcx
-                pop             rsi
-                pop             rdi
-                ret
 
 ; adds 64-bit number to long number
 ;    rdi -- address of summand #1 (long number)
