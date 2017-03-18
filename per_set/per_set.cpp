@@ -261,8 +261,7 @@ std::pair<persistent_set::iterator, bool> persistent_set::persistent_set::insert
 
 void persistent_set::erase(persistent_set::iterator iter) {
 	if (head == nullptr) return;
-    if (iter.now -> value == 60)
-        iter.now = iter.now;
+
 	bool need_to_delete = true;
 
 	node *delete_node = iter.now;
