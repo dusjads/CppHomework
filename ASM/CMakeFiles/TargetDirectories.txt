@@ -1,0 +1,7 @@
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/rebuild_cache.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/try.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/add.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/hello.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/mult.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/edit_cache.dir
+/home/daria/Code/ITMO/C++/CppHomework/ASM/CMakeFiles/sub.dir

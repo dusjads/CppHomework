@@ -11,9 +11,10 @@ _start:
                 call read_long
                 lea rsi, [rsp + 128 * 8]
 ; swap rdi and rsi
-                mov rax, rdi
-                mov rdi, rsi
-                mov rsi, rax
+                xchg rdi, rsi
+                ;mov rax, rdi
+                ;mov rdi, rsi
+                ;mov rsi, rax
                 call sub_long_long
 
                 call write_long
@@ -23,30 +24,6 @@ _start:
 
                 jmp exit
 
-; adds two long number
-; rdi -- address of summand #1 (long number)
-; rsi -- address of summand #2 (long number)
-; rcx -- length of long numbers in qwords
-; result:
-; sum is written to rdi
-add_long_long:
-                push rdi
-                push rsi
-                push rcx
-
-                clc
-.loop:
-                mov rax, [rsi]
-                lea rsi, [rsi + 8]
-                adc [rdi], rax
-                lea rdi, [rdi + 8]
-                dec rcx
-                jnz .loop
-
-                pop rcx
-                pop rsi
-                pop rdi
-                ret
 
 
 ; subs two long number
@@ -65,6 +42,7 @@ sub_long_long:
 .loop:
                 mov rax, [rsi]
                 lea rsi, [rsi + 8]
+                ;add rsi, 8
                 sbb [rdi], rax
                 lea rdi, [rdi + 8]
                 dec rcx

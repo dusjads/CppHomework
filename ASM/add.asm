@@ -4,7 +4,7 @@
 _start:
 
                 sub             rsp, 2 * 128 * 8
-                lea             rdi, [rsp + 128 * 8]
+                lea             rdi, [rsp + 128 * 8] ; mov rdi, rsp + 128*8
                 mov             rcx, 128
                 call            read_long
                 mov             rdi, rsp
@@ -33,7 +33,7 @@ add_long_long:
                 clc
 .loop:
                 mov             rax, [rsi]
-                lea             rsi, [rsi + 8]
+                lea             rsi, [rsi + 8] ;add rsi, 8
                 adc             [rdi], rax
                 lea             rdi, [rdi + 8]
                 dec             rcx

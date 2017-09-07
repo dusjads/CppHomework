@@ -1,0 +1,1 @@
+/usr/bin/ld CMakeFiles/try.dir/try.asm.o -o try

@@ -1,0 +1,3 @@
+/home/daria/Code/ITMO/C++/Smth/cpp-course/bigint/CMakeFiles/edit_cache.dir
+/home/daria/Code/ITMO/C++/Smth/cpp-course/bigint/CMakeFiles/rebuild_cache.dir
+/home/daria/Code/ITMO/C++/Smth/cpp-course/bigint/CMakeFiles/big_integer_testing.dir

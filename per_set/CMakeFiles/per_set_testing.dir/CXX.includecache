@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/daria/Code/ITMO/C++/CppHomework/per_set/per_set.cpp
+per_set.h
+/home/daria/Code/ITMO/C++/CppHomework/per_set/per_set.h
+iostream
+-
+
+/home/daria/Code/ITMO/C++/CppHomework/per_set/per_set.h
+utility
+-
+vector
+-
+
+/home/daria/Code/ITMO/C++/CppHomework/per_set/per_set_tests_random.cpp
+iostream
+-
+per_set.h
+/home/daria/Code/ITMO/C++/CppHomework/per_set/per_set.h
+vector
+-
+algorithm
+-
+string
+-
+

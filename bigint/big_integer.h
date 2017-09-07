@@ -1,13 +1,15 @@
 #ifndef BIG_INTEGER_H
 #define BIG_INTEGER_H
-
+#include <cstddef>
 #include <iosfwd>
+#include <vector>
 
 struct big_integer
 {
     big_integer();
     big_integer(big_integer const& other);
     big_integer(int a);
+    big_integer(unsigned int a);
     explicit big_integer(std::string const& str);
     ~big_integer();
 
@@ -43,17 +45,21 @@ struct big_integer
     friend bool operator<=(big_integer const& a, big_integer const& b);
     friend bool operator>=(big_integer const& a, big_integer const& b);
 
+    friend bool abs_compare(big_integer const& a, big_integer const& b);
+
     friend std::string to_string(big_integer const& a);
+    friend std::string to_string_help(big_integer const& a);
 
-    
+    friend void bin(big_integer &a, size_t size);
+    friend void base(big_integer &a);
+    friend void remove_zeros(big_integer& a);
+    friend unsigned int div(big_integer const& a, big_integer const& rhs);
+    friend big_integer mul(big_integer const& a, unsigned int digit);
+
+
 private:
-    int size;
-    unsigned int* digits;
-    bool negative;
-
-    friend void div_short(big_integer &res, unsigned long long div);
-    friend void mul_with_left(big_integer &res, big_integer &rhs, unsigned long long mul, int left);
-    friend void binary_operation(big_integer &res, big_integer const& rhs, int operation);
+    std::vector <unsigned int> digits;
+    bool positive;
 };
 
 big_integer operator+(big_integer a, big_integer const& b);
