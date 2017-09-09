@@ -10,8 +10,9 @@ using std::vector;
 using std::max;
 using std::cout;
 
-int POW = 32;
-unsigned long long BASE = ((unsigned long long)1 << POW);
+int const POW = 32;
+unsigned long long const BASE = ((unsigned long long)1 << POW);
+big_integer const TEN = 10;
 
 big_integer::big_integer()
 {
@@ -205,6 +206,47 @@ big_integer& big_integer::operator*=(big_integer const& rhs)
 
     return *this;
 }
+/*
+big_integer& big_integer::operator/=(big_integer const& rhs)
+{
+	if (rhs == 0)
+		throw std::runtime_error("division by zero");
+	big_integer rhs_tmp = rhs.positive ? rhs : -rhs;
+	big_integer tmp = positive ? *this : -*this;
+	big_integer l = 0, r = tmp + 1;
+	bool positive_tmp = (rhs.positive == positive);                   
+	
+	
+	while (l + 1 < r) {
+		big_integer m = l + ((r - l) >> 1);
+		if (m * rhs_tmp > tmp)
+			r = m;
+		else
+			l = m;
+	}
+	*this = l;
+	remove_zeros(*this);
+	positive = positive_tmp;
+    return *this;
+}*/
+
+//rhs * m > a
+bool check(big_integer const& rhs, unsigned int digit, big_integer const& a) {
+	unsigned int carry = 0;
+
+	big_integer res = 0;
+	res.digits.resize(rhs.digits.size(), 0);
+	for (size_t i = 0; i < rhs.digits.size(); i++) {
+		unsigned long long sum = (unsigned long long)rhs.digits[i] * digit + carry;
+		carry = sum >> POW;
+		sum %= BASE;
+		res.digits[i] = sum;
+	}
+	if (carry){
+		res.digits.push_back(carry);
+	}
+	return res > a;
+}
 
 unsigned int div(big_integer const& a, big_integer const& rhs){
 	if (rhs == 0)
@@ -212,7 +254,7 @@ unsigned int div(big_integer const& a, big_integer const& rhs){
 	unsigned long long l = 0, r = BASE;
 	while (l + 1 < r) {
 		unsigned int m = l + ((r - l) >> 1);
-		if (rhs * m > a)
+		if (check(rhs, m, a))
 			r = m;
 		else
 			l = m;
@@ -469,7 +511,15 @@ big_integer operator>>(big_integer a, int b)
 
 bool operator==(big_integer const& a, big_integer const& b)
 {
-    return !((a < b) || (b < a));
+    //return !((a < b) || (b < a));
+	if (a.digits.size() != b.digits.size())
+		return false;
+	for (size_t i = a.digits.size(); i > 0; i--)
+	{
+		if (a.digits[i-1] != b.digits[i-1])
+			return false;
+	}
+	return true;
 }
 
 bool operator!=(big_integer const& a, big_integer const& b)

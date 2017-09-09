@@ -54,7 +54,7 @@ struct big_integer
     friend void base(big_integer &a);
     friend void remove_zeros(big_integer& a);
     friend unsigned int div(big_integer const& a, big_integer const& rhs);
-    friend big_integer mul(big_integer const& a, unsigned int digit);
+    friend bool check(big_integer const& rhs, unsigned int digit, big_integer const& a);
 
 
 private:
