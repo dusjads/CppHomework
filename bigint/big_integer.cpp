@@ -47,7 +47,6 @@ big_integer::big_integer(std::string const& str)
 {
     std::string str_tmp = str;
     big_integer ten_pow = 1;
-    big_integer TEN = 10;
     positive = true;
     bool positive_tmp = true;
     size_t num_size = str_tmp.size();
@@ -206,29 +205,6 @@ big_integer& big_integer::operator*=(big_integer const& rhs)
 
     return *this;
 }
-/*
-big_integer& big_integer::operator/=(big_integer const& rhs)
-{
-	if (rhs == 0)
-		throw std::runtime_error("division by zero");
-	big_integer rhs_tmp = rhs.positive ? rhs : -rhs;
-	big_integer tmp = positive ? *this : -*this;
-	big_integer l = 0, r = tmp + 1;
-	bool positive_tmp = (rhs.positive == positive);                   
-	
-	
-	while (l + 1 < r) {
-		big_integer m = l + ((r - l) >> 1);
-		if (m * rhs_tmp > tmp)
-			r = m;
-		else
-			l = m;
-	}
-	*this = l;
-	remove_zeros(*this);
-	positive = positive_tmp;
-    return *this;
-}*/
 
 //rhs * m > a
 bool check(big_integer const& rhs, unsigned int digit, big_integer const& a) {
@@ -262,6 +238,29 @@ unsigned int div(big_integer const& a, big_integer const& rhs){
 	return l;
 }
 
+unsigned int find_digit(big_integer const& sub, big_integer const& rhs) {
+	size_t part_size = 4;
+	if (sub.digits.size() <= part_size)
+		return div(sub, rhs);
+	big_integer sub_part = 0;
+	sub_part.digits.resize(part_size, 0);
+	for (size_t i = 0; i < part_size; i++) {
+		sub_part.digits[i] = sub.digits[i + sub.digits.size() - part_size];
+	}
+	big_integer rhs_part = 0;
+	rhs_part.digits.resize(part_size, 0);
+	for (size_t i = 0; i < part_size; i++) {
+		rhs_part.digits[i] = rhs.digits[i + rhs.digits.size() - part_size];
+	}
+	if (rhs_part > sub_part) {
+		sub_part <<= POW;
+		sub_part |= sub.digits[part_size];
+	}
+	//cout << "sub_part " << to_string_help(sub_part) << '\n';
+	//cout << "rhs_part " << to_string_help(rhs_part) << '\n';
+	return div(sub_part, rhs_part);
+}
+
 big_integer& big_integer::operator/=(big_integer const& rhs)
 {
 	if (rhs == 0)
@@ -280,10 +279,24 @@ big_integer& big_integer::operator/=(big_integer const& rhs)
 		sub <<= POW;
 		sub |= tmp.digits[cur_pos];
 		cur_pos--;
-
-		unsigned int res_digit = div(sub, rhs_tmp);
+		unsigned int res_digit;
+		if (sub < rhs_tmp)
+			res_digit = 0;
+		else{
+		
+			res_digit = find_digit(sub, rhs_tmp);
+			big_integer mul = rhs_tmp * res_digit;
+			if (sub < mul) {
+				mul -= rhs_tmp;
+				res_digit--;
+			}
+			else if (sub >= mul + rhs_tmp) {
+				mul += rhs_tmp;
+				res_digit++;
+			}
+			sub -= mul; 
+		}
 		res.digits.push_back(res_digit);
-		sub -= rhs_tmp * res_digit; 
 	}
 	
 	std::reverse(res.digits.begin(), res.digits.end());
@@ -571,8 +584,7 @@ std::string to_string(big_integer const& a)
     }
     if (a.digits.size() == 1) {
     	return a.positive ? std::to_string(a.digits[0]) : "-" + std::to_string(a.digits[0]);
-    }	
-    big_integer TEN = 10;                   
+    }                   
 
     big_integer tmp = a.positive ? a : -a;
     while (tmp > 0) 
@@ -597,15 +609,18 @@ std::ostream& operator<<(std::ostream& s, big_integer const& a)
 /*int main(int argc, char const *argv[])
 {
 	cout << "AAAAA" << '\n';
-	big_integer a("10000000000000000000000000000000000000000000000000000000000000000000000");
+	big_integer a("2222222845122222222222222222222222222222");
 	//big_integer a("1000000000000000000000000");
-    big_integer b("10000000000000000");
+    big_integer b("22222222222200002222222222222222221");
     //unsigned int b = 2000;
     //big_integer c;
     //c = a / b;
     //cout << to_string_help(a) << '\n';
-    //cout << to_string_help(a / b) << '\n';
-    cout << a << '\n';
+    //cout << to_string_help(a * b) << '\n';
+    cout << to_string_help(a) << '\n';
+
+    cout << to_string_help((a * b) / b) << '\n';
+    cout << ((a * b) / b == a) << '\n';
 
 
 	return 0;

@@ -55,6 +55,7 @@ struct big_integer
     friend void remove_zeros(big_integer& a);
     friend unsigned int div(big_integer const& a, big_integer const& rhs);
     friend bool check(big_integer const& rhs, unsigned int digit, big_integer const& a);
+    friend unsigned int find_digit(big_integer const& sub, big_integer const& rhs);
 
 
 private:
