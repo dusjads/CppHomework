@@ -205,29 +205,6 @@ big_integer& big_integer::operator*=(big_integer const& rhs)
 
     return *this;
 }
-/*
-big_integer& big_integer::operator/=(big_integer const& rhs)
-{
-	if (rhs == 0)
-		throw std::runtime_error("division by zero");
-	big_integer rhs_tmp = rhs.positive ? rhs : -rhs;
-	big_integer tmp = positive ? *this : -*this;
-	big_integer l = 0, r = tmp + 1;
-	bool positive_tmp = (rhs.positive == positive);                   
-	
-	
-	while (l + 1 < r) {
-		big_integer m = l + ((r - l) >> 1);
-		if (m * rhs_tmp > tmp)
-			r = m;
-		else
-			l = m;
-	}
-	*this = l;
-	remove_zeros(*this);
-	positive = positive_tmp;
-    return *this;
-}*/
 
 unsigned int div(big_integer const& a, big_integer const& rhs){
 	if (rhs == 0)
@@ -567,7 +544,7 @@ std::ostream& operator<<(std::ostream& s, big_integer const& a)
 }
 
 
-int main(int argc, char const *argv[])
+/*int main(int argc, char const *argv[])
 {
 	cout << "AAAAA" << '\n';
 	big_integer a("10000000000000000000000000000000000000000000000000000000000000000000000");
@@ -582,4 +559,4 @@ int main(int argc, char const *argv[])
 
 
 	return 0;
-}
+}*/
