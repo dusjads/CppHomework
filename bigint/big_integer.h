@@ -56,6 +56,17 @@ struct big_integer
     friend unsigned int div(big_integer const& a, big_integer const& rhs);
     friend bool check(big_integer const& rhs, unsigned int digit, big_integer const& a);
     friend unsigned int find_digit(big_integer const& sub, big_integer const& rhs);
+    friend void short_mul(big_integer& res, big_integer const& rhs, unsigned int digit);
+    friend void short_mod(big_integer& res, big_integer const& a, unsigned int digit);
+    friend void div(big_integer& x, big_integer const& y, big_integer& q, big_integer& r);
+    friend void long_div(big_integer const& x, big_integer const& y, big_integer& q, big_integer& r, int n, int m);
+    friend bool smaller(big_integer const& r, big_integer const& dq, int k, int m);
+    friend void diff(big_integer& r, big_integer const& dq, int km, int m);
+    friend unsigned long long trial(big_integer& r, big_integer& d, int m, int k);
+    friend void short_div(big_integer& res, big_integer& a, unsigned int digit);
+
+
+
 
 
 private:
