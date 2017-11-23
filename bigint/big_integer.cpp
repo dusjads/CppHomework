@@ -205,14 +205,10 @@ big_integer& big_integer::operator*=(big_integer const& rhs)
     return *this;
 }
 
-///////////////////////div///////////////////////////////
 
 void short_mul(big_integer& res, big_integer const& a, unsigned int digit){
-    //cout << "I'm in short_mul\n";
     unsigned int carry = 0;
     res = 0;
-    //res.digits.resize(a.digits.size(), 0);
-    //cout << "a " << to_string_help(a) << '\n';
     for (size_t i = 0; i < a.digits.size(); i++) {
         unsigned long long sum = (unsigned long long)a.digits[i] * digit + carry;
         carry = sum >> POW;
@@ -225,7 +221,6 @@ void short_mul(big_integer& res, big_integer const& a, unsigned int digit){
 }
 
 void short_div(big_integer& res, big_integer& a, unsigned int digit){
-    //cout << "I'm in short_div\n";
     unsigned int carry = 0;
     unsigned long long tmp = 0;
     size_t sz = a.digits.size();
@@ -238,7 +233,6 @@ void short_div(big_integer& res, big_integer& a, unsigned int digit){
 }
 
 void short_mod(big_integer& res, big_integer const& a, unsigned int digit){
-    //cout << "I'm in short_mod\n";
     unsigned int carry = 0;
     for (int i = a.digits.size() - 1; i > -1; i--){
         carry = (unsigned long long)(carry * BASE + a.digits[i]) % digit;
@@ -246,22 +240,17 @@ void short_mod(big_integer& res, big_integer const& a, unsigned int digit){
     res = carry;
 }
 
-//#define __int128_t unsigned long long
 
 unsigned long long trial(big_integer& r, big_integer& d, int k, int m){
-    //cout << "I'm in trial\n";
     int km = k + m;
-    //cout << "m k " << m << ' ' << k << '\n';
     size_t sz_r = r.digits.size();
     for (int i = sz_r; i < km + 1; i++)
         r.digits.push_back(0);
     size_t sz_d = d.digits.size();
     for (int i = sz_d; i < m; i++)
         d.digits.push_back(0);
-    //cout << r.digits.size() << ' ' << d.digits.size() << '\n';
     __uint128_t r3 = ((__uint128_t)r.digits[km] * BASE + r.digits[km - 1]) * BASE + r.digits[km - 2];
     __uint128_t d2 = (__uint128_t)d.digits[m - 1] * BASE + d.digits[m - 2];
-    //cout << "r3 / d2 " << r3 << ' ' << d2 << ' ' << r3 / d2 << '\n';
     __uint128_t t = r3 / d2;
     if (t > BASE - 1)
         return BASE - 1;
@@ -269,19 +258,13 @@ unsigned long long trial(big_integer& r, big_integer& d, int k, int m){
 }
 
 bool smaller(big_integer const& r, big_integer const& dq, int k, int m){
-    //cout << "I'm in smaller\n";
     int i = m;
-    //cout << to_string_help(dq) << '\n';
-    //cout << to_string_help(r) << '\n';
-    //cout << k << '\n';
     while (i > 0 && r.digits[i + k] == dq.digits[i])
         i--;
-    //cout << i << ' ' << k << ' ' << (r.digits[i + k] < dq.digits[i]) << '\n';
     return r.digits[i + k] < dq.digits[i];
 }
 
 void diff(big_integer& r, big_integer const& dq, int k, int m){
-    //cout << "I'm in diff\n";
     int borrow = 0;
     unsigned long long df = 0;
     for (int i = 0; i <= m; i++){
@@ -292,38 +275,29 @@ void diff(big_integer& r, big_integer const& dq, int k, int m){
 }
 
 void long_div(big_integer const& x, big_integer const& y, big_integer& q, big_integer& r, int n, int m){
-    //cout << "I'm in long_div\n";
     unsigned int f = BASE / (y.digits[m - 1] + 1);
     short_mul(r, x, f);
     big_integer d = 0;
     short_mul(d, y, f);
-    //cout << "f " << f << '\n';
-    //cout << "r " << to_string_help(r) << '\n';
-    //cout << "d " << to_string_help(d) << '\n';
     unsigned long long qt = 0;
     big_integer dq = 0;
     q.digits.resize(n - m + 1, 0);
     for (int k = n - m; k > -1; k--){
         qt = trial(r, d, k, m);
         short_mul(dq, d, qt);
-        //cout << "qt " << qt << '\n';
-        //	cout << to_string_help(r) << '\n';
         dq.digits.push_back(0);
         if (smaller(r, dq, k, m)){
             qt--;
             short_mul(dq, d, qt);
         }
         q.digits[k] = qt;
-        //	cout << q.digits[k] << ' ';
         diff(r, dq, k, m);
     }
-    //cout << '\n';
     short_div(r, r, f);
 
 }
 
 void div(big_integer& x, big_integer const& y, big_integer& q, big_integer& r){
-    //cout << "I'm in div\n";
     size_t sz_y = y.digits.size();
     if (sz_y == 0)
         throw std::runtime_error("division by zero");
@@ -344,7 +318,6 @@ void div(big_integer& x, big_integer const& y, big_integer& q, big_integer& r){
     }
 }
 
-////////////////////////////////////
 
 big_integer& big_integer::operator/=(big_integer const& rhs)
 {
@@ -366,28 +339,18 @@ big_integer& big_integer::operator/=(big_integer const& rhs)
 
 big_integer& big_integer::operator%=(big_integer const& rhs)
 {
-/*	big_integer a = positive ? *this : -*this;
-	big_integer b = a / rhs;
-	b *= rhs;
-	a -= b;
-	a.positive = positive;
-	*this = a;
-    return *this;
-*/
     if (rhs == 0)
         throw std::runtime_error("division by zero");
     if (*this == 0)
         return *this;
     big_integer rhs_tmp = rhs.positive ? rhs : -rhs;
     big_integer tmp = positive ? *this : -*this;
-    //bool positive_tmp = (rhs.positive == positive);
     big_integer q = 0;
     big_integer r = 0;
     div(*this, rhs, q, r);
 
     *this = r;
     remove_zeros(*this);
-    //positive = positive_tmp;
     return *this;
 }
 
