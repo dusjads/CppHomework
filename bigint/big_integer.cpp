@@ -170,7 +170,7 @@ big_integer& big_integer::operator*=(big_integer const& rhs)
 {
     positive = (positive == rhs.positive);
     unsigned int carry = 0;
-    size_t res_size = digits.size() + rhs.digits.size() + 1;
+    size_t res_size = digits.size() + 2*rhs.digits.size() + 1;
     vector <unsigned int> next(res_size, 0);
     for (size_t i = 0; i < rhs.digits.size(); i++)
     {
