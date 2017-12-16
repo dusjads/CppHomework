@@ -36,13 +36,6 @@ big_integer::big_integer(int a)
     }
 }
 
-big_integer::big_integer(unsigned int a)
-{
-    positive = true;
-    if (a > 0)
-        digits.push_back(a);
-}
-
 big_integer::big_integer(std::string const& str)
 {
     std::string str_tmp = str;
