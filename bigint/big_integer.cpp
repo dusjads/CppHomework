@@ -10,7 +10,7 @@ using std::vector;
 using std::max;
 using std::cout;
 
-int const POW = 30;
+int const POW = 32;
 unsigned long long const BASE = ((unsigned long long)1 << POW);
 big_integer const TEN = 10;
 
