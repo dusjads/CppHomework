@@ -27,12 +27,13 @@ big_integer::big_integer(big_integer const& other)
 
 big_integer::big_integer(int a)
 {
-    if (a == 0)
+    long long a_long = a;
+    if (a_long == 0)
         positive = true;
     else
     {
-        positive = a > 0;
-        digits.push_back((a > 0) ? a : -a);
+        positive = a_long > 0;
+        digits.push_back((a_long > 0) ? a_long : -a_long);
     }
 }
 
