@@ -26,21 +26,18 @@ set::iterator& set::iterator::operator++(){
 	if (cur->right){
 		cur = cur->right;
 		while (cur->left){
-			stack.push_back(cur);
 			cur = cur->left;
 		}
 		return *this;
 	}
-	while (stack.size() != 0 && stack.back()->right == cur){
-		cur = stack.back();
-		stack.pop_back();
+	while (cur->parent && cur == cur->parent->right){
+		cur = cur->parent;
 	}
-	if (stack.size() == 0){
+	if (!cur->parent){
 		is_end = true;
 		return *this;
 	}
-	cur = stack.back();
-	stack.pop_back();
+	cur = cur->parent;
 	return *this;
 }
 
@@ -61,24 +58,21 @@ set::iterator& set::iterator::operator--(){
 	if (cur->left){
 		cur = cur->left;
 		while (cur->right){
-			stack.push_back(cur);
 			cur = cur->right;
 		}
 		return *this;
 	}
-	while (stack.size() != 0 && stack.back()->left == cur){
-		cur = stack.back();
-		stack.pop_back();
+	while (cur->parent && cur == cur->parent->left){
+		cur = cur->parent;
 	}
-	if (stack.size() == 0){
+	if (!cur->parent){
+		is_end = true;
 		return *this;
 	}
-	cur = stack.back();
-	stack.pop_back();
-	is_end = false;
+	cur = cur->parent;
 	return *this;
-
 }
+
 set::iterator set::iterator::operator--(int){
 	iterator next = *this;
 	--*this;
@@ -116,11 +110,9 @@ set::iterator set::appr_find(set::value_type x) const{
 	node* it_node = new_it.cur;
 	while (((it_node->left && it_node->val > x) || (it_node->right && it_node->val < x))){
 		while (it_node->left && it_node->val > x){
-			new_it.stack.push_back(it_node);
 			it_node = it_node->left;
 		}
 		while (it_node->right && it_node->val < x){
-			new_it.stack.push_back(it_node);
 			it_node = it_node->right;
 		}
 	}
@@ -160,7 +152,6 @@ std::pair<set::iterator, bool> set::insert(set::value_type x){
 	if (it_node->val == x){
 		return std::make_pair(new_it, false);
 	}
-	new_it.stack.push_back(it_node);
 	if (it_node->val > x){
 		it_node->left = new node(x);
 		it_node->left->parent = it_node;
@@ -216,13 +207,15 @@ void set::erase_node(node* old){
 	while (min_right->left){
 		min_right = min_right->left;
 	}
-	set:value_type key = min_right->val;
+	set::value_type key = min_right->val;
 	erase_node(min_right);
 	node* new_node = new node(key);
 	new_node->right = old->right;
 	new_node->left = old->left;
 	new_node->parent = old->parent;
 	old->right->parent = new_node;
+	old->left->parent = new_node;
+	
 	if (is_left)
 		old->parent->left = new_node;
 	else
@@ -278,7 +271,7 @@ set::value_type main()
     	if (*it % 2) {
     		c.erase(it);
     	}
-
+    std::cout << "end\n";
     for(auto it = c.begin(); it != c.end(); it++)
     	std::cout << *it << ' ';
     std::cout << '\n';
