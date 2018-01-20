@@ -83,7 +83,6 @@ struct set::iterator
 
 
 private:
-    std::vector <node*> stack;
     node* cur = nullptr;
     bool is_end = false;
 };
